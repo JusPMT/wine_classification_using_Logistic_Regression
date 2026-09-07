@@ -20,12 +20,11 @@
 ### 2. Cấu trúc thư mục dự án
 
 ```text
-PROJECT/
+wine_classification_using_Logistic_Regression/
 │
 ├── .gitignore                      # Danh sách các tệp và thư mục loại trừ khỏi Git tracking
 ├── README.md                       # Tài liệu hướng dẫn và tổng quan dự án
 ├── requirements.txt                # Danh sách thư viện Python cần thiết
-├── requirement.txt                 # Ghi chú yêu cầu và tiến độ từ người dùng
 │
 ├── data/                           # Quản lý tập dữ liệu
 │   ├── raw/                        # Dữ liệu gốc (Wine dataset từ UCI / Scikit-learn)
@@ -52,14 +51,11 @@ PROJECT/
 │       └── visualization.py        # Vẽ đồ thị phân phối, heatmap, learning curves
 │
 ├── reports/                        # Báo cáo kết quả và tài liệu trình bày
-│   ├── MauBaoCaoHocMay.docx        # Biểu mẫu báo cáo chuẩn theo quy định của môn học
+│   ├── MauBaoCaoHocMay.docx        # Biểu mẫu báo cáo chuẩn môn học
 │   ├── figures/                    # Biểu đồ và hình ảnh trích xuất phục vụ bài báo cáo
 │   └── presentations/              # Slide trình bày tiến độ (Tuần 11) và vấn đáp (Tuần 12)
 │
-├── saved_models/                   # Lưu trữ trọng số mô hình hoặc đối tượng sau huấn luyện
-│
-├── DanhSachDeTaiGoiY.xlsx          # Danh sách đề tài gợi ý từ giảng viên
-└── HD Thuc hien do an cuoi ky mon Hoc may.pdf  # Hướng dẫn chi tiết đồ án cuối kỳ
+└── saved_models/                   # Lưu trữ trọng số mô hình hoặc đối tượng sau huấn luyện
 ```
 
 ---
