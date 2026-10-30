@@ -8,9 +8,10 @@
 - **Học phần**: Machine Learning (Thời lượng: 12 tuần)
 - **Dạng bài toán**: Phân lớp dữ liệu (Classification)
 - **Mô hình chính**: Hồi quy Logistic (Logistic Regression)
+- **Bài toán cụ thể**: dự đoán một mẫu rượu vang đỏ Vinho Verde là **đạt chuẩn** (`quality >= 6`, nhãn 1) hay **chưa đạt** (`quality < 6`, nhãn 0) từ 11 chỉ số hóa lý. Dữ liệu: UCI Wine Quality, tập rượu vang đỏ (1.599 mẫu).
 - **Mục tiêu**:
   - Triển khai toàn diện quy trình Học máy (Machine Learning Pipeline) từ tiền xử lý dữ liệu, trích xuất đặc trưng, huấn luyện đến đánh giá mô hình.
-  - Cài đặt mô hình Logistic Regression từ đầu (From Scratch) sử dụng thuần toán học và thư viện nền tảng NumPy (tính toán hàm mất mát Cross-Entropy, Gradient Descent, Softmax/Sigmoid).
+  - Cài đặt mô hình Logistic Regression từ đầu (From Scratch) sử dụng thuần toán học và thư viện nền tảng NumPy (hàm Sigmoid, hàm mất mát Cross-Entropy, Gradient Descent, điều chuẩn L2).
   - Cài đặt mô hình đối chuẩn (Benchmark) sử dụng thư viện chuyên dụng `scikit-learn`.
   - Thực nghiệm, so sánh độ chính xác và hiệu năng giữa hai phương pháp tiếp cận dựa trên các chỉ số: Accuracy, Precision, Recall, F1-Score, Confusion Matrix.
   - Hoàn thiện báo cáo khoa học theo chuẩn biểu mẫu `MauBaoCaoHocMay.docx` (tuân thủ quy chuẩn trích dẫn IEEE) và tài liệu trình chiếu phục vụ báo cáo tiến độ (Tuần 11) và vấn đáp kết thúc môn (Tuần 12).
@@ -27,20 +28,21 @@ wine_classification_using_Logistic_Regression/
 ├── requirements.txt                # Danh sách thư viện Python cần thiết
 │
 ├── data/                           # Quản lý tập dữ liệu
-│   ├── raw/                        # Dữ liệu gốc (Wine dataset từ UCI / Scikit-learn)
+│   ├── raw/                        # Dữ liệu gốc winequality-red.csv (UCI Wine Quality)
 │   └── processed/                  # Dữ liệu sau tiền xử lý, làm sạch và chuẩn hóa
 │
 ├── notebooks/                      # Jupyter Notebooks phục vụ khám phá và thử nghiệm
 │   ├── 01_eda.ipynb                # Khám phá và phân tích trực quan dữ liệu (EDA)
 │   ├── 02_model_scratch.ipynb      # Cài đặt và thực nghiệm mô hình Logistic Regression từ đầu
-│   └── 03_model_sklearn.ipynb      # Cài đặt mô hình bằng thư viện Scikit-learn và so sánh
+│   ├── 03_model_sklearn.ipynb      # Cài đặt mô hình bằng thư viện Scikit-learn và so sánh
+│   └── 04_evaluation.ipynb         # Tuần 9–10: đánh giá, tinh chỉnh siêu tham số, phân tích lỗi
 │
 ├── src/                            # Mã nguồn chính của dự án (dạng module chuẩn hóa)
 │   ├── __init__.py
 │   ├── data/                       # Tiền xử lý dữ liệu
 │   │   ├── __init__.py
 │   │   ├── make_dataset.py         # Thu thập và tải tập dữ liệu
-│   │   └── preprocess.py           # Làm sạch, chuẩn hóa (StandardScaler/MinMaxScaler)
+│   │   └── preprocess.py           # Làm sạch, tạo nhãn, chia train/test, chuẩn hóa (StandardScaler)
 │   ├── models/                     # Thuật toán và mô hình
 │   │   ├── __init__.py
 │   │   ├── logistic_regression_scratch.py  # Thuật toán tự cài đặt bằng NumPy
@@ -63,7 +65,7 @@ wine_classification_using_Logistic_Regression/
 ### 3. Quy trình thực hiện (Machine Learning Pipeline)
 
 1. **Khám phá dữ liệu (EDA - Exploratory Data Analysis)**:
-   - Thống kê mô tả các đặc tính hóa lý của rượu (độ cồn, axit, màu sắc, proline, flavonoid,...).
+   - Thống kê mô tả các đặc tính hóa lý của rượu (nồng độ cồn, các loại axit, đường dư, SO₂, sulphate,...).
    - Kiểm tra tương quan giữa các biến độc lập và nhãn phân loại (Correlation Matrix).
    - Phát hiện các giá trị ngoại lai (outliers) hoặc giá trị thiếu sót (missing values).
 
@@ -73,12 +75,12 @@ wine_classification_using_Logistic_Regression/
    - Phân chia tập dữ liệu thành Train / Validation / Test theo tỷ lệ hợp lý (ví dụ: 70/15/15 hoặc 80/20 kèm Stratified K-Fold).
 
 3. **Xây dựng mô hình**:
-   - **Mô hình tự cài đặt (From Scratch)**: Triển khai từ cơ sở toán học với thuật toán tối ưu Gradient Descent, hàm kích hoạt Softmax (cho đa lớp) hoặc Sigmoid (cho nhị phân), kỹ thuật điều chuẩn (L2 Regularization).
+   - **Mô hình tự cài đặt (From Scratch)**: Triển khai từ cơ sở toán học với thuật toán tối ưu Gradient Descent, hàm kích hoạt Sigmoid (bài toán nhị phân), kỹ thuật điều chuẩn (L2 Regularization).
    - **Mô hình Scikit-Learn**: Cấu hình bộ siêu tham số tối ưu thông qua Grid Search / Cross-Validation.
 
 4. **Thực nghiệm và đánh giá**:
    - So sánh đường hội tụ (Loss convergence curve) và thời gian huấn luyện.
-   - Đánh giá tổng hợp bằng Confusion Matrix, Precision, Recall, F1-Score (Macro / Weighted) và ROC-AUC.
+   - Đánh giá tổng hợp bằng Confusion Matrix, Precision, Recall, F1-Score và ROC-AUC.
 
 5. **Tổng kết và đóng gói**:
    - Biên soạn báo cáo hoàn chỉnh định dạng PDF theo mẫu `MauBaoCaoHocMay.docx`.
@@ -118,7 +120,31 @@ wine_classification_using_Logistic_Regression/
 
 ---
 
-### 5. Lịch trình và mốc kiểm soát (Milestones)
+### 5. Cách chạy mã nguồn
+
+```bash
+# (Tùy chọn) tải lại dữ liệu gốc từ UCI; tập tin đã có sẵn trong data/raw/
+python -m src.data.make_dataset
+
+# Tiền xử lý: loại 240 bản ghi trùng, tạo nhãn, chia 80/20 có phân tầng, chuẩn hóa z-score
+python -m src.data.preprocess            # thêm --keep-duplicates để giữ bản ghi trùng
+
+# Chạy lần lượt bốn notebook trong notebooks/
+jupyter notebook
+```
+
+| Notebook | Nội dung | Mục trong báo cáo |
+|---|---|---|
+| `01_eda.ipynb` | Thống kê, phân bố điểm, boxplot, tương quan, ngoại lai | 3.1 – 3.2 |
+| `02_model_scratch.ipynb` | Mô hình tự cài đặt, khảo sát tốc độ học, đánh giá | 4.4 |
+| `03_model_sklearn.ipynb` | GridSearchCV, đối chuẩn với bản tự cài đặt, so sánh thời gian | 4.5 |
+| `04_evaluation.ipynb` | Kiểm tra cuối, kiểm định chéo, C/L1/L2, ngưỡng, bootstrap hệ số, phân tích lỗi | 5.1–5.2 |
+
+Quy ước kỹ thuật: nhãn `y = 1` nếu `quality >= 6`; `train_test_split(test_size=0.2, stratify=y, random_state=42)`; `StandardScaler` chỉ `fit` trên tập train; `lam = 1 / C` (bản tự cài đặt `lam = 1` tương ứng scikit-learn `C = 1`); hệ số chặn `b` không bị điều chuẩn. Hình xuất ra nằm trong `reports/figures/`, mô hình đã huấn luyện nằm trong `saved_models/`.
+
+---
+
+### 6. Lịch trình và mốc kiểm soát (Milestones)
 
 - **Tuần 2 - 4**: Thiết lập môi trường, thu thập dữ liệu, phân tích EDA và hoàn thành chương 1, 2 của báo cáo.
 - **Tuần 5 - 8**: Cài đặt mô hình tự code (scratch), mô hình thư viện (scikit-learn), hoàn thiện tiền xử lý và chương 3, 4.
